@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{311c7f9f-51a5-47b7-ac57-aaad8fa5799c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{3707e320-c749-4a17-9c36-d0b78df1b7d2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="main.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CIFAR\data_batch_1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_3.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_4.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_5.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_2.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CIFAR\test_batch.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

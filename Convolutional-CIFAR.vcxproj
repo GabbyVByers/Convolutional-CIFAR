@@ -90,6 +90,14 @@
       <FileType>Document</FileType>
     </CudaCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="CIFAR\data_batch_1.bin" />
+    <None Include="CIFAR\data_batch_2.bin" />
+    <None Include="CIFAR\data_batch_3.bin" />
+    <None Include="CIFAR\data_batch_4.bin" />
+    <None Include="CIFAR\data_batch_5.bin" />
+    <None Include="CIFAR\test_batch.bin" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.9.targets" />

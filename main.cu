@@ -5,6 +5,12 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+class CIFAR_DataSet {
+    CIFAR_DataSet() {
+
+    }
+};
+
 int main()
 {
     sf::RenderWindow window;
@@ -22,3 +28,4 @@ int main()
 
     return 0;
 }
+
