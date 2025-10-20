@@ -12,6 +12,9 @@
     <CudaCompile Include="main.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
+    <CudaCompile Include="tensor.cuh">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="CIFAR\data_batch_1.bin">
