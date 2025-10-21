@@ -7,6 +7,12 @@
     <Filter Include="Resource Files">
       <UniqueIdentifier>{3707e320-c749-4a17-9c36-d0b78df1b7d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\CIFAR">
+      <UniqueIdentifier>{f694c4e2-9dbe-42c7-a3ec-4fb22a3225ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Sprites">
+      <UniqueIdentifier>{cc093ab9-d854-474a-9189-d53ec37f03fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="main.cu">
@@ -18,22 +24,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CIFAR\data_batch_1.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="CIFAR\data_batch_3.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="CIFAR\data_batch_4.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="CIFAR\data_batch_5.bin">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\CIFAR</Filter>
     </None>
     <None Include="CIFAR\data_batch_2.bin">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\CIFAR</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_3.bin">
+      <Filter>Resource Files\CIFAR</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_4.bin">
+      <Filter>Resource Files\CIFAR</Filter>
+    </None>
+    <None Include="CIFAR\data_batch_5.bin">
+      <Filter>Resource Files\CIFAR</Filter>
     </None>
     <None Include="CIFAR\test_batch.bin">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\CIFAR</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sprites\iso_cube.png">
+      <Filter>Resource Files\Sprites</Filter>
+    </Image>
   </ItemGroup>
 </Project>

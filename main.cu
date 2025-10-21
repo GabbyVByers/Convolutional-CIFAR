@@ -15,28 +15,8 @@
 
 #include "tensor.cuh"
 
-__global__ void convolution_forward_pass_kernel(float* input, float* output) {
-    unsigned int kernel_index = blockIdx.x;
-    unsigned int num_kernels  = gridDim.x;
-    
-    unsigned int x = threadIdx.x;
-    unsigned int y = threadIdx.y;
-    unsigned int z = threadIdx.z;
-    unsigned int x_dim = blockDim.x;
-    unsigned int y_dim = blockDim.y;
-    unsigned int z_dim = blockDim.z;
+__global__ void convolution_forward_pass_kernel() {
 
-
-    unsigned int kernel_width;
-
-    float sum = 0.0f;
-    for (int i = 0; i < kernel_width; i++) {
-        for (int j = 0; j < kernel_width; j++) {
-            sum += input[x][y + j][z + i] * kernel_weights[N][j][i];
-        }
-    }
-
-    output[(num_kernels * x) + kernel_index];
 }
 
 class CIFAR_DataSet {
@@ -91,10 +71,36 @@ public:
     }
 };
 
+class TensorRenderer {
+
+public:
+    sf::RenderWindow* window  = nullptr;
+    sf::Texture* cube_texture = nullptr;
+    sf::Sprite*  cube_sprite  = nullptr;
+
+    TensorRenderer(sf::RenderWindow* window) {
+        this->window = window;
+        cube_texture = new sf::Texture("Sprites/iso_cube.png");
+        cube_sprite  = new sf::Sprite(*cube_texture);
+    }
+
+    void draw(int z_dim, int y_dim, int x_dim, int curr_layer) {
+        
+        
+        
+    }
+};
+
 int main()
 {
     sf::RenderWindow window;
-    window.create(sf::VideoMode({ 800, 800 }), "My Window");
+    window.create(sf::VideoMode({ 1920, 1080 }), "Convolutional CIFAR - Gabitha V. Byers", sf::Style::Close);
+    window.setFramerateLimit(50);
+
+    TensorRenderer tensor_renderer(&window);
+
+    sf::Texture cube_texture("Sprites/iso_cube.png");
+    sf::Sprite cube_sprite(cube_texture);
 
     while (window.isOpen()) {
         while (const std::optional event = window.pollEvent()) {
@@ -102,7 +108,30 @@ int main()
                 window.close();
         }
 
-        window.clear(sf::Color::Blue);
+        window.clear(sf::Color::Black);
+        //tensor_renderer.draw(10, 10, 10, 1);
+        
+        
+        int z_dim = 3;
+        int y_dim = 32;
+        int x_dim = 32;
+        int curr_layer = 1;
+
+        float window_height = (float)window.getSize().y;
+        sf::Vector2f base_position = sf::Vector2f(100, 300);
+
+        for (int x = 0; x < x_dim; x++) {
+            for (int y = 0; y < y_dim; y++) {
+                for (int z = 0; z < z_dim; z++) {
+                    cube_sprite.setPosition(base_position);
+                    cube_sprite.move(sf::Vector2f(0, 14 * (y_dim - y)));
+                    cube_sprite.move(sf::Vector2f(z * 15, z * 7));
+                    cube_sprite.move(sf::Vector2f((x_dim - x) * 15, (x_dim - x) * -7));
+                    window.draw(cube_sprite);
+                }
+            }
+        }
+
         window.display();
     }
 
