@@ -15,9 +15,12 @@
 
 #include "tensor.cuh"
 
-struct Image {
+__global__ void forward_pass_convolution_kernel() {
 
-};
+
+
+
+}
 
 class CIFAR_DataSet {
 public:
@@ -33,7 +36,6 @@ public:
             std::ifstream& file = CIFAR_binary_files[i];
             assert(file.is_open());
         }
-
     }
 
 private:
@@ -41,68 +43,42 @@ private:
     unsigned char* device_dataset = nullptr;
 };
 
-
-
-
-
-
 class ConvolutionalLayer {
 public:
-    float* input_matrix = nullptr;
-    int    input_width  = -1;
+    Tensor3* input          = nullptr;
+    Tensor3* output         = nullptr;
+    Tensor3* kernel_weights = nullptr;
 
-    float* kernel_weights = nullptr;
-    int    num_kernels  = -1;
-    int    kernel_width = -1;
+    int num_kernels  = -1;
+    int kernel_width = -1;
 
-    float* output_matrix = nullptr;
-    int    output_width  = -1;
-
-    ConvolutionalLayer(float* input_matrix,
-                       int    input_width,
-                       int    num_kernels,
-                       int    kernel_width) {
-
-        this->input_matrix = input_matrix;
-        this->input_width  = input_width;
+    ConvolutionalLayer(Tensor3* input, Tensor3* output, int num_kernels, int kernel_width) {
+        this->input        = input;
+        this->output       = output;
         this->num_kernels  = num_kernels;
         this->kernel_width = kernel_width;
-
-        assert(kernel_width % 2 == 1);
-        assert(input_width  % 2 == 0);
-        output_width   = input_width  - kernel_width + 1;
-        output_matrix = new float[output_width * output_width];
-        kernel_weights = new float[num_kernels * kernel_width * kernel_width];
+        assert(output->x_dim == (input->x_dim - kernel_width + 1));
+        assert(output->y_dim == (input->y_dim - kernel_width + 1));
+        assert(output->z_dim == (input->x_dim * num_kernels));
+        kernel_weights = new Tensor3(num_kernels, kernel_width, kernel_width);
     }
 
     ~ConvolutionalLayer() {
-        delete[] kernel_weights;
-        delete[] output_matrix;
+        delete kernel_weights;
     }
 
     void execute_forward_pass() {
-        forward_pass_kernel<<<1, size>>> ();
-    }
-
-    __global__ void forward_pass_kernel(float* input, float* output) {
-        size_t inputIndex
+        size_t x_dim = output->x_dim;
+        size_t y_dim = output->y_dim;
+        size_t z_dim = output->z_dim;
+        dim3 BLOCKS_PER_GRID = 1;
+        dim3 THREADS_PER_BLOCK = dim3(x_dim, y_dim, z_dim);
+        forward_pass_convolution_kernel <<<BLOCKS_PER_GRID, THREADS_PER_BLOCK>>> ();
     }
 };
-
-
-class ConvolutionalNeuralNetwork {
-
-};
-
-
 
 int main()
 {
-    
-    CIFAR_DataSet CIFAR;
-
-    Tensor3 input_activations(3, 32, 32);
-    
     sf::RenderWindow window;
     window.create(sf::VideoMode({ 800, 800 }), "My Window");
 

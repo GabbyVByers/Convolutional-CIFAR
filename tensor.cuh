@@ -18,12 +18,17 @@ public:
 		cudaFree(device_data);
 	}
 
-	float* get_matrix_host(size_t x) {
+	void set_value_host(size_t x, size_t y, size_t z, float value) {
+		size_t idx = (x_step_size() * x) + (y_step_size() * y) + z;
+		host_data[idx] = value;
+	}
+
+	float* host_matrix_ptr(size_t x) {
 		size_t idx = x_step_size() * x;
 		return &host_data[idx];
 	}
 
-	float* get_matrix_device(size_t x) {
+	float* device_matrix_ptr(size_t x) {
 		size_t idx = x_step_size() * x;
 		return &device_data[idx];
 	}
@@ -31,15 +36,12 @@ public:
 	void transfer_to_gpu() { cudaMemcpy(device_data, host_data, capacity * sizeof(int), cudaMemcpyHostToDevice); }
 	void transfer_to_cpu() { cudaMemcpy(host_data, device_data, capacity * sizeof(int), cudaMemcpyDeviceToHost); }
 
-private:
 	float* host_data   = nullptr;
 	float* device_data = nullptr;
 	size_t x_dim, y_dim, z_dim;
 	size_t capacity;
 
-	//size_t w_step_size() { return z_dim * y_dim * x_dim; }
 	size_t x_step_size() { return z_dim * y_dim; }
 	size_t y_step_size() { return z_dim; }
-	size_t z_step_size() { return 1; }
-
 };
+
