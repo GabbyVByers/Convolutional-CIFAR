@@ -15,11 +15,28 @@
 
 #include "tensor.cuh"
 
-__global__ void forward_pass_convolution_kernel() {
+__global__ void convolution_forward_pass_kernel(float* input, float* output) {
+    unsigned int kernel_index = blockIdx.x;
+    unsigned int num_kernels  = gridDim.x;
+    
+    unsigned int x = threadIdx.x;
+    unsigned int y = threadIdx.y;
+    unsigned int z = threadIdx.z;
+    unsigned int x_dim = blockDim.x;
+    unsigned int y_dim = blockDim.y;
+    unsigned int z_dim = blockDim.z;
 
 
+    unsigned int kernel_width;
 
+    float sum = 0.0f;
+    for (int i = 0; i < kernel_width; i++) {
+        for (int j = 0; j < kernel_width; j++) {
+            sum += input[x][y + j][z + i] * kernel_weights[N][j][i];
+        }
+    }
 
+    output[(num_kernels * x) + kernel_index];
 }
 
 class CIFAR_DataSet {
@@ -68,12 +85,9 @@ public:
     }
 
     void execute_forward_pass() {
-        size_t x_dim = output->x_dim;
-        size_t y_dim = output->y_dim;
-        size_t z_dim = output->z_dim;
-        dim3 BLOCKS_PER_GRID = 1;
-        dim3 THREADS_PER_BLOCK = dim3(x_dim, y_dim, z_dim);
-        forward_pass_convolution_kernel <<<BLOCKS_PER_GRID, THREADS_PER_BLOCK>>> ();
+        dim3 BLOCKS_PER_GRID = dim3(num_kernels);
+        dim3 THREADS_PER_BLOCK = dim3(output->z_dim, output->y_dim, output->x_dim);
+        convolution_forward_pass_kernel<<<BLOCKS_PER_GRID, THREADS_PER_BLOCK>>> ();
     }
 };
 
