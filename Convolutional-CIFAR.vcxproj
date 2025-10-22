@@ -104,6 +104,9 @@
   <ItemGroup>
     <Image Include="Sprites\iso_cube.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CIFAR\batches.meta.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 12.9.targets" />

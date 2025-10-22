@@ -47,4 +47,9 @@
       <Filter>Resource Files\Sprites</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CIFAR\batches.meta.txt">
+      <Filter>Resource Files\CIFAR</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
