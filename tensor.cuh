@@ -2,13 +2,23 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
+#define uint unsigned int
+
 class Tensor3 {
 public:
-	Tensor3(unsigned int x_dim, unsigned int y_dim, unsigned int z_dim) {
-		this->x_dim = x_dim;
-		this->y_dim = y_dim;
-		this->z_dim = z_dim;
-		capacity = x_dim * y_dim * z_dim;
+	float* host_data   = nullptr;
+	float* device_data = nullptr;
+
+	uint capacity = 0;
+	uint x_dim = 0;
+	uint y_dim = 0;
+	uint z_dim = 0;
+
+	Tensor3(uint x, uint y, uint z) {
+		capacity = x * y * z;
+		x_dim = x;
+		y_dim = y;
+		z_dim = z;
 		host_data = new float[capacity];
 		cudaMalloc((void**)&device_data, capacity * sizeof(float));
 	}
@@ -18,30 +28,12 @@ public:
 		cudaFree(device_data);
 	}
 
-	void set_value_host(unsigned int x, unsigned int y, unsigned int z, float value) {
-		unsigned int idx = (x_step_size() * x) + (y_step_size() * y) + z;
-		host_data[idx] = value;
+	void transfer_to_gpu() const {
+		cudaMemcpy(device_data, host_data, capacity * sizeof(float), cudaMemcpyHostToDevice);
 	}
 
-	float* host_matrix_ptr(unsigned int x) {
-		unsigned int idx = x_step_size() * x;
-		return &host_data[idx];
+	void transfer_to_cpu() const {
+		cudaMemcpy(host_data, device_data, capacity * sizeof(float), cudaMemcpyDeviceToHost);
 	}
-
-	float* device_matrix_ptr(unsigned int x) {
-		unsigned int idx = x_step_size() * x;
-		return &device_data[idx];
-	}
-
-	void transfer_to_gpu() { cudaMemcpy(device_data, host_data, capacity * sizeof(float), cudaMemcpyHostToDevice); }
-	void transfer_to_cpu() { cudaMemcpy(host_data, device_data, capacity * sizeof(float), cudaMemcpyDeviceToHost); }
-
-	float* host_data   = nullptr;
-	float* device_data = nullptr;
-	unsigned int x_dim, y_dim, z_dim;
-	unsigned int capacity;
-
-	unsigned int x_step_size() { return z_dim * y_dim; }
-	unsigned int y_step_size() { return z_dim; }
 };
 
